@@ -1,0 +1,84 @@
+services:
+  app: 
+    build: .
+    working_dir: /app
+    volumes: 
+      - .:/app
+    ports: 
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks: 
+      - sonari_network
+    command: ./mvnw spring-boot:run
+    container_name: sonari_app
+
+  mysql: 
+    image: mysql:8
+    ports: 
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment: 
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: "root"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - sonari_network
+    container_name: sonari_mysql 
+
+  phpmyadmin: 
+    image: phpmyadmin/phpmyadmin
+    ports: 
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    depends_on: 
+      - mysql
+    networks: 
+      - sonari_network
+    container_name: sonari_phpmyadmin 
+
+  icecast: 
+    image: moul/icecast
+    ports: 
+      - "8000:8000"
+    volumes: 
+      - ./radio/icecast:/etc/icecast
+    environment: 
+      ICECAST_SOURCE_PASSWORD: ${ICECAST_SOURCE_PASSWORD}
+      ICECAST_ADMIN_PASSWORD: ${ICECAST_ADMIN_PASSWORD}
+      ICECAST_RELAY_PASSWORD: ${ICECAST_RELAY_PASSWORD}
+    networks: 
+      - sonari_network
+    container_name: sonari_icecast
+
+  liquidsoap: 
+    image: savonet/liquidsoap:v2.3.1
+    working_dir: /radio
+    command: liquidsoap radio.liq
+    depends_on: 
+      - icecast
+    volumes: 
+      - ./radio/liquidsoap:/etc/liquidsoap
+    networks: 
+      - sonari_network
+    container_name: sonari_liquidsoap
+
+volumes:
+  mysql_data:
+  
+networks: 
+  sonari_network:
