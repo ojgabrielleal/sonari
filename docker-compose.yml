@@ -65,7 +65,7 @@ services:
 
   liquidsoap: 
     image: savonet/liquidsoap:v2.3.1
-    working_dir: /radio
+    working_dir: /radio/liquidsoap
     command: liquidsoap radio.liq
     depends_on: 
       - icecast
