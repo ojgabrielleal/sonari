@@ -1,5 +1,5 @@
 package com.sonari.dto;
 
-public record AuthResponseDTO(
+public record TokenResponseDTO(
     String acesssToken
 ){}

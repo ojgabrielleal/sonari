@@ -5,8 +5,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.sonari.dto.UserRequestDTO;
 import com.sonari.dto.UserResponseDTO;
 import com.sonari.entity.User;
+import com.sonari.mapper.UserMapper;
 import com.sonari.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,32 +18,31 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public List<UserResponseDTO> index(){
         return userRepository.findAll()
             .stream()
-            .map(UserResponseDTO::from)
+            .map(userMapper::toResponse)
             .toList();
     }
 
     public UserResponseDTO show(UUID uuid){
-        return UserResponseDTO.from(
+        return userMapper.toResponse(
             userRepository.findByUuid(uuid).orElseThrow()
         );
     }
 
-    public User store(User data){
-        return userRepository.save(data);
+    public User store(UserRequestDTO data){
+        return userRepository.save(
+            userMapper.toEntity(data)
+        );
     }
 
-    public User update(UUID uuid, User data){
+    public User update(UUID uuid, UserRequestDTO data){
         User user = userRepository.findByUuid(uuid).orElseThrow();
 
-        user.setFullName(data.getFullName());
-        user.setNickName(data.getNickName());
-        user.setCity(data.getCity());
-        user.setState(data.getState());
-        user.setCountry(data.getCountry());
+        userMapper.updateEntity(user, data);
 
         return userRepository.save(user);
     }

@@ -1,13 +1,10 @@
 package com.sonari.service;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.sonari.dto.AuthRegisterDTO;
 import com.sonari.dto.AuthRequestDTO;
-import com.sonari.dto.AuthResponseDTO;
+import com.sonari.dto.TokenResponseDTO;
 import com.sonari.entity.User;
 import com.sonari.repository.UserRepository;
 import com.sonari.security.TokenService;
@@ -22,7 +19,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public AuthResponseDTO auth(AuthRequestDTO data){
+    public TokenResponseDTO auth(AuthRequestDTO data){
         User user = userRepository
             .findByUsername(data.username())
             .orElseThrow();
@@ -38,11 +35,11 @@ public class AuthService {
 
         String token = tokenService.generateToken(user);
 
-        return new AuthResponseDTO(token);
+        return new TokenResponseDTO(token);
 
     }
 
-    public void register(AuthRegisterDTO data){
+    public void register(AuthRequestDTO data){
         User user = new User();
 
         user.setUsername(data.username());

@@ -1,11 +1,6 @@
 package com.sonari.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,16 +28,6 @@ public class User {
     private String fullName;
     @Column(unique = true)
     private String nickName;
-
-    private String city;
-    private String state;
-    private String country; 
-    private LocalDate birthDate;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
     @PrePersist
     public void generateUuid() {
