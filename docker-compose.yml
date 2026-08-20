@@ -75,6 +75,21 @@ services:
       - sonari_network
     container_name: sonari_liquidsoap
 
+  ftp: 
+    image: stilliard/pure-ftpd
+    ports: 
+      - "21:21"
+      - "30000-30009:30000-30009"
+    environment: 
+      FTP_USER_NAME: ${FTP_USERNAME}
+      FTP_USER_PASS: ${FTP_PASSWORD}
+      FTP_USER_HOME: /home/sonari
+      FTP_PASSIVE_PORTS: 30000:30009
+    restart: unless-stopped
+    volumes: 
+      - ./radio/musics:/home/sonari
+    container_name: sonari_ftp
+
 volumes:
   mysql_data:
   
