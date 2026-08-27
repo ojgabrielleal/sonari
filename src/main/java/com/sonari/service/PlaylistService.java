@@ -39,18 +39,22 @@ public class PlaylistService {
         );
     }
 
-    public Playlist create(PlaylistRequestDTO data){
-        return playlistRepository.save(
+    public PlaylistResponseDTO store(PlaylistRequestDTO data){
+        Playlist playlist = playlistRepository.save(
             playlistMapper.toEntity(data)
-        );        
+        );       
+
+        return playlistMapper.toResponse(playlist);
     }
 
-    public Playlist update(UUID uuid, PlaylistRequestDTO data){
+    public PlaylistResponseDTO update(UUID uuid, PlaylistRequestDTO data){
         Playlist playlist = playlistRepository.findByUuid(uuid).orElseThrow();
         
         playlistMapper.updateEntity(playlist, data);
         
-        return playlistRepository.save(playlist);
+        return playlistMapper.toResponse(
+            playlistRepository.save(playlist)
+        );
     }
 
     public void delete(UUID uuid){
@@ -59,23 +63,22 @@ public class PlaylistService {
         playlistRepository.delete(playlist);
     }
 
-    public Playlist addMusic(UUID uuid, MusicRequestDTO data){
+    public PlaylistResponseDTO addMusic(UUID uuid, MusicRequestDTO music){
         Playlist playlist = playlistRepository.findByUuid(uuid).orElseThrow();
 
         playlist.getMusics().add(
-            musicMapper.toEntity(data)
+            musicMapper.toEntity(music)
         );
 
-        return playlist;
+        return playlistMapper.toResponse(playlist);
     }
 
-    public Playlist removeMusic(UUID playlistUUID, UUID musicUUID){
+    public void deleteMusic(UUID playlistUUID, UUID musicUUID){
         Playlist playlist = playlistRepository.findByUuid(playlistUUID).orElseThrow();
+        
         Music music = musicRepository.findByUuid(musicUUID).orElseThrow();
 
         playlist.getMusics().remove(music);
-
-        return playlist;
     }
 
 }

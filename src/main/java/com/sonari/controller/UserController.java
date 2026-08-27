@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sonari.dto.UserRequestDTO;
 import com.sonari.dto.UserResponseDTO;
-import com.sonari.entity.User;
 import com.sonari.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,12 +36,12 @@ public class UserController {
     }
 
     @PostMapping
-    public User store(@RequestBody UserRequestDTO user){
+    public UserResponseDTO store(@RequestBody UserRequestDTO user){
         return userService.store(user);
     }
 
     @PutMapping("/{uuid}")
-    public User update(@PathVariable UUID uuid, @RequestBody UserRequestDTO user){
+    public UserResponseDTO update(@PathVariable UUID uuid, @RequestBody UserRequestDTO user){
         return userService.update(uuid, user);
     }
 

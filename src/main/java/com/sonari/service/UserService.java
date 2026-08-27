@@ -33,18 +33,22 @@ public class UserService {
         );
     }
 
-    public User store(UserRequestDTO data){
-        return userRepository.save(
+    public UserResponseDTO store(UserRequestDTO data){
+        User user = userRepository.save(
             userMapper.toEntity(data)
         );
+
+        return userMapper.toResponse(user);
     }
 
-    public User update(UUID uuid, UserRequestDTO data){
+    public UserResponseDTO update(UUID uuid, UserRequestDTO data){
         User user = userRepository.findByUuid(uuid).orElseThrow();
 
         userMapper.updateEntity(user, data);
 
-        return userRepository.save(user);
+        return userMapper.toResponse(
+            userRepository.save(user)
+        );
     }
 
     public void delete(UUID uuid){

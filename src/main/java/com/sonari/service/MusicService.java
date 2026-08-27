@@ -33,12 +33,14 @@ public class MusicService {
         );
     } 
 
-    public Music update(UUID uuid, MusicRequestDTO data){
+    public MusicResponseDTO update(UUID uuid, MusicRequestDTO data){
         Music music = musicRepository.findByUuid(uuid).orElseThrow();
 
         musicMapper.updateEntity(music, data);
 
-        return musicRepository.save(music);
+        return musicMapper.toResponse(
+            musicRepository.save(music)
+        );
     }
 
     public void delete(UUID uuid){
