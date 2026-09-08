@@ -1,5 +1,5 @@
 CREATE TABLE playlists(
     id BIGINT AUTO_INCREMENT PRIMARY KEY, 
     uuid BINARY(16) NOT NULL UNIQUE,
-    name varchar(255) NOT NULL UNIQUE, 
-)
+    name varchar(255) NOT NULL UNIQUE
+);

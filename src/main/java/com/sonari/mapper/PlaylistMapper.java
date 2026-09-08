@@ -18,7 +18,7 @@ public class PlaylistMapper {
         return new PlaylistResponseDTO(
             playlist.getUuid(),
             playlist.getName(),
-            playlist.getLiquidsoapConfig(),
+            playlist.getWeight(),
             playlist.getMusics()
                 .stream()
                 .map(musicMapper::toResponse)
@@ -30,14 +30,14 @@ public class PlaylistMapper {
         Playlist playlist = new Playlist();
 
         playlist.setName(data.name());
-        playlist.setLiquidsoapConfig(data.liquidsoap_config());
+        playlist.setWeight(data.weight());
 
         return playlist;
     }
 
     public void updateEntity(Playlist playlist, PlaylistRequestDTO data){
         playlist.setName(data.name());
-        playlist.setLiquidsoapConfig(data.liquidsoap_config());
+        playlist.setWeight(data.weight());
     }
     
 }

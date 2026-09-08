@@ -19,8 +19,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="musics")
-public class Music {
+@Table(name="playlist_musics")
+public class PlaylistMusic {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

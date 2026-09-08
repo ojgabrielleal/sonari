@@ -54,7 +54,7 @@ services:
     ports: 
       - "8000:8000"
     volumes: 
-      - ./radio/icecast:/etc/icecast
+      - ./infrastructure/icecast:/etc/icecast
     environment: 
       ICECAST_SOURCE_PASSWORD: ${ICECAST_SOURCE_PASSWORD}
       ICECAST_ADMIN_PASSWORD: ${ICECAST_ADMIN_PASSWORD}
@@ -65,12 +65,12 @@ services:
 
   liquidsoap: 
     image: savonet/liquidsoap:v2.3.1
-    working_dir: /radio/liquidsoap
-    command: liquidsoap radio.liq
+    working_dir: /infrastructure/liquidsoap
+    command: liquidsoap liquidsoap.liq
     depends_on: 
       - icecast
     volumes: 
-      - ./radio/liquidsoap:/etc/liquidsoap
+      - ./infrastructure/liquidsoap:/etc/liquidsoap
     networks: 
       - sonari_network
     container_name: sonari_liquidsoap
@@ -87,7 +87,7 @@ services:
       FTP_PASSIVE_PORTS: 30000:30009
     restart: unless-stopped
     volumes: 
-      - ./radio/musics:/home/sonari
+      - ./media:/home/sonari
     container_name: sonari_ftp
 
 volumes:

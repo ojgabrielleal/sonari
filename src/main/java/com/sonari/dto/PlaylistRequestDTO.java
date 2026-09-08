@@ -1,12 +1,11 @@
 package com.sonari.dto;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public record PlaylistRequestDTO(
     UUID uuid, 
     String name,
-    Map<String, Object> liquidsoap_config,
-    List<MusicRequestDTO> musics
+    Integer weight,
+    List<PlaylistMusicRequestDTO> musics
 ){}

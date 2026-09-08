@@ -34,17 +34,11 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             try{
                 String username = tokenService.validateToken(token);
+
                 User user = userRepository.findByUsername(username).orElseThrow();
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, List.of());
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    user, 
-                    null, 
-                    List.of()
-                );
-
-                SecurityContextHolder
-                    .getContext()
-                    .setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }catch(Exception e){
                 e.printStackTrace();
 

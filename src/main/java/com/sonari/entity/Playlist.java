@@ -1,11 +1,8 @@
 package com.sonari.entity;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,12 +31,11 @@ public class Playlist {
 
     private String name;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "liquidsoap_config", columnDefinition = "json")
-    private Map<String, Object> liquidsoapConfig;
+    @Column(nullable = false)
+    private Integer weight;
 
-    @OneToMany(mappedBy="playlist")
-    private List<Music> musics;
+    @OneToMany(mappedBy="playlists")
+    private List<PlaylistMusic> musics;
 
     @PrePersist
     public void generateUuid() {

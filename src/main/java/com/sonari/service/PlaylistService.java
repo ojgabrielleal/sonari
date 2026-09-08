@@ -5,10 +5,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.sonari.dto.MusicRequestDTO;
+import com.sonari.dto.PlaylistMusicRequestDTO;
 import com.sonari.dto.PlaylistRequestDTO;
 import com.sonari.dto.PlaylistResponseDTO;
-import com.sonari.entity.Music;
+import com.sonari.entity.PlaylistMusic;
 import com.sonari.entity.Playlist;
 import com.sonari.mapper.MusicMapper;
 import com.sonari.mapper.PlaylistMapper;
@@ -63,7 +63,7 @@ public class PlaylistService {
         playlistRepository.delete(playlist);
     }
 
-    public PlaylistResponseDTO addMusic(UUID uuid, MusicRequestDTO music){
+    public PlaylistResponseDTO addMusic(UUID uuid, PlaylistMusicRequestDTO music){
         Playlist playlist = playlistRepository.findByUuid(uuid).orElseThrow();
 
         playlist.getMusics().add(
@@ -76,7 +76,7 @@ public class PlaylistService {
     public void deleteMusic(UUID playlistUUID, UUID musicUUID){
         Playlist playlist = playlistRepository.findByUuid(playlistUUID).orElseThrow();
         
-        Music music = musicRepository.findByUuid(musicUUID).orElseThrow();
+        PlaylistMusic music = musicRepository.findByUuid(musicUUID).orElseThrow();
 
         playlist.getMusics().remove(music);
     }

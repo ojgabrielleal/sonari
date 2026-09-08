@@ -2,23 +2,23 @@ package com.sonari.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.sonari.dto.MusicRequestDTO;
-import com.sonari.dto.MusicResponseDTO;
-import com.sonari.entity.Music;
+import com.sonari.dto.PlaylistMusicRequestDTO;
+import com.sonari.dto.PlaylistMusicResponseDTO;
+import com.sonari.entity.PlaylistMusic;
 
 @Component
 public class MusicMapper {
     
-    public MusicResponseDTO toResponse(Music music){
-        return new MusicResponseDTO(
+    public PlaylistMusicResponseDTO toResponse(PlaylistMusic music){
+        return new PlaylistMusicResponseDTO(
             music.getUuid(),
             music.getName(),
             music.getPath()
         );
     }
 
-    public Music toEntity(MusicRequestDTO data){
-        Music music = new Music();
+    public PlaylistMusic toEntity(PlaylistMusicRequestDTO data){
+        PlaylistMusic music = new PlaylistMusic();
 
         music.setName(data.name());
         music.setPath(data.path());
@@ -26,7 +26,7 @@ public class MusicMapper {
         return music;
     }
 
-    public void updateEntity(Music music, MusicRequestDTO data){
+    public void updateEntity(PlaylistMusic music, PlaylistMusicRequestDTO data){
         music.setName(data.name());
         music.setPath(data.path());
     }

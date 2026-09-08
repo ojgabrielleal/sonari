@@ -38,15 +38,4 @@ public class AuthService {
         return new TokenResponseDTO(token);
 
     }
-
-    public void register(AuthRequestDTO data){
-        User user = new User();
-
-        user.setUsername(data.username());
-        user.setPassword(
-            passwordEncoder.encode(data.password())
-        );
-
-        userRepository.save(user);
-    }
 }
