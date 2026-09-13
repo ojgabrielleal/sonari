@@ -10,9 +10,9 @@ import com.sonari.dto.PlaylistRequestDTO;
 import com.sonari.dto.PlaylistResponseDTO;
 import com.sonari.entity.PlaylistMusic;
 import com.sonari.entity.Playlist;
-import com.sonari.mapper.MusicMapper;
+import com.sonari.mapper.PlaylistMusicMapper;
 import com.sonari.mapper.PlaylistMapper;
-import com.sonari.repository.MusicRepository;
+import com.sonari.repository.PlaylistMusicRepository;
 import com.sonari.repository.PlaylistRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,8 @@ public class PlaylistService {
     
     private final PlaylistRepository playlistRepository;
     private final PlaylistMapper playlistMapper;
-    private final MusicRepository musicRepository;
-    private final MusicMapper musicMapper;
+    private final PlaylistMusicRepository playlistMusicRepository;
+    private final PlaylistMusicMapper playlistMusicMapper;
 
     public List<PlaylistResponseDTO> index(){
         return playlistRepository.findAll()
@@ -67,7 +67,7 @@ public class PlaylistService {
         Playlist playlist = playlistRepository.findByUuid(uuid).orElseThrow();
 
         playlist.getMusics().add(
-            musicMapper.toEntity(music)
+            playlistMusicMapper.toEntity(music)
         );
 
         return playlistMapper.toResponse(playlist);
@@ -76,9 +76,9 @@ public class PlaylistService {
     public void deleteMusic(UUID playlistUUID, UUID musicUUID){
         Playlist playlist = playlistRepository.findByUuid(playlistUUID).orElseThrow();
         
-        PlaylistMusic music = musicRepository.findByUuid(musicUUID).orElseThrow();
+        PlaylistMusic playlistMusic = playlistMusicRepository.findByUuid(musicUUID).orElseThrow();
 
-        playlist.getMusics().remove(music);
+        playlist.getMusics().remove(playlistMusic);
     }
 
 }

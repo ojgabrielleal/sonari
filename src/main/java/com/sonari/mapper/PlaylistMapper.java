@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlaylistMapper {
 
-    private final MusicMapper musicMapper;
+    private final PlaylistMusicMapper musicMapper;
     
     public PlaylistResponseDTO toResponse(Playlist playlist){
         return new PlaylistResponseDTO(

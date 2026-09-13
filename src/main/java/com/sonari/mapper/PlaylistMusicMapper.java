@@ -7,7 +7,7 @@ import com.sonari.dto.PlaylistMusicResponseDTO;
 import com.sonari.entity.PlaylistMusic;
 
 @Component
-public class MusicMapper {
+public class PlaylistMusicMapper {
     
     public PlaylistMusicResponseDTO toResponse(PlaylistMusic music){
         return new PlaylistMusicResponseDTO(

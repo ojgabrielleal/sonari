@@ -1,8 +1,8 @@
 package com.sonari.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +35,7 @@ public class Playlist {
     private Integer weight;
 
     @OneToMany(mappedBy="playlists")
-    private List<PlaylistMusic> musics;
+    private List<PlaylistMusic> musics = new ArrayList<>();
 
     @PrePersist
     public void generateUuid() {
