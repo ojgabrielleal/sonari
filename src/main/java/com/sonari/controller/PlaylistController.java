@@ -20,6 +20,7 @@ import com.sonari.service.PlaylistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -56,7 +57,7 @@ public class PlaylistController {
         description = "Creates a new playlist with the provided data."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public PlaylistResponseDTO store(@RequestBody PlaylistRequestDTO playlist){
+    public PlaylistResponseDTO store(@RequestBody @Valid PlaylistRequestDTO playlist){
         return playlistService.store(playlist);
     }
 
@@ -66,7 +67,7 @@ public class PlaylistController {
         description = "Updates an existing playlist based on the provided UUID."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public PlaylistResponseDTO update(@PathVariable("playlist_uuid") UUID uuid, @RequestBody PlaylistRequestDTO playlist){
+    public PlaylistResponseDTO update(@PathVariable("playlist_uuid") UUID uuid, @Valid @RequestBody PlaylistRequestDTO playlist){
         return playlistService.update(uuid, playlist);
     }
 
@@ -76,7 +77,7 @@ public class PlaylistController {
         description = "Deletes an existing playlist based on the provided UUID."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public void delete(@PathVariable("uuid") UUID uuid){
+    public void delete(@PathVariable("playlist_uuid") UUID uuid){
         playlistService.delete(uuid);
     }
 
@@ -86,7 +87,7 @@ public class PlaylistController {
         description = "Adds a music to a playlist based on the provided playlist UUID."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public PlaylistResponseDTO addMusic(@PathVariable("playlist_uuid") UUID uuid, @RequestBody PlaylistMusicRequestDTO music){
+    public PlaylistResponseDTO addMusic(@PathVariable("playlist_uuid") UUID uuid, @Valid @RequestBody PlaylistMusicRequestDTO music){
         return playlistService.addMusic(uuid, music);
     }
 

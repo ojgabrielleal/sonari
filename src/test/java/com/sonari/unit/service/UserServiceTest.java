@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,8 +21,6 @@ import com.sonari.mapper.UserMapper;
 import com.sonari.repository.UserRepository;
 import com.sonari.service.UserService;
 
-import net.datafaker.Faker;
-
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
@@ -34,8 +31,6 @@ public class UserServiceTest {
     @InjectMocks 
     private UserService userService;
 
-    private final static Faker faker = new Faker();
-
     @Test 
     void shouldReturnsAllUsers(){
         List<User> users = UserFactory.create(5);
@@ -44,11 +39,7 @@ public class UserServiceTest {
             .thenReturn(users);
 
         for(User user: users){
-            UserResponseDTO userResponse =  new UserResponseDTO(
-                user.getUuid(),
-                user.getFullName(),
-                user.getNickName()
-            );
+            UserResponseDTO userResponse = UserFactory.createWithResponse();
 
             when(userMapper.toResponse(user))
                 .thenReturn(userResponse);
@@ -61,12 +52,7 @@ public class UserServiceTest {
     @Test 
     void shouldReturnUniqueUser(){
         User user = UserFactory.create();
-
-        UserResponseDTO userResponse =  new UserResponseDTO(
-            user.getUuid(),
-            user.getFullName(),
-            user.getNickName()
-        );
+        UserResponseDTO userResponse = UserFactory.createWithResponse(user);
 
         when(userRepository.findByUuid(user.getUuid()))
             .thenReturn(Optional.of(user));
@@ -84,19 +70,8 @@ public class UserServiceTest {
     @Test 
     void shouldStoreUser(){
         User user = UserFactory.create();
-
-        UserRequestDTO userRequest = new UserRequestDTO(
-            UUID.randomUUID(),
-            faker.name().fullName(),
-            faker.credentials().username()
-        );
-
-        UserResponseDTO userResponse =  new UserResponseDTO(
-            user.getUuid(),
-            user.getFullName(),
-            user.getNickName()
-        );
-
+        UserRequestDTO userRequest = UserFactory.createWithRequest();
+        UserResponseDTO userResponse = UserFactory.createWithResponse(user);
 
         when(userRepository.save(user))
             .thenReturn(user);

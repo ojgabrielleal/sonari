@@ -7,7 +7,6 @@ import com.sonari.dto.AuthRequestDTO;
 import com.sonari.dto.TokenResponseDTO;
 import com.sonari.entity.User;
 import com.sonari.repository.UserRepository;
-import com.sonari.security.TokenService;
 
 import lombok.RequiredArgsConstructor;
 

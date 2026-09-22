@@ -1,4 +1,4 @@
-package com.sonari.security;
+package com.sonari.service;
 
 import java.util.Date;
 
@@ -15,8 +15,11 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class TokenService {
     
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
+
+    public TokenService(@Value("${jwt.secret") String secret){
+        this.secret = secret;
+    }
 
     public String generateToken(User user){
         SecretKey key = Keys.hmacShaKeyFor(

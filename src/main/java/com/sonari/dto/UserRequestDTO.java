@@ -1,9 +1,10 @@
 package com.sonari.dto;
 
-import java.util.UUID;
+import jakarta.validation.constraints.NotBlank;
 
 public record UserRequestDTO(
-    UUID uuid,
+    @NotBlank(message="Full name is required")
     String fullName,
+    @NotBlank(message="Nickname is required")
     String nickName
 ) {}

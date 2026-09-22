@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,38 +27,33 @@ import com.sonari.repository.PlaylistMusicRepository;
 import com.sonari.repository.PlaylistRepository;
 import com.sonari.service.PlaylistService;
 
-import net.datafaker.Faker;
-
 @ExtendWith(MockitoExtension.class)
 public class PlaylistServiceTest {
     
     @Mock
     private PlaylistRepository playlistRepository;
+
     @Mock 
     private PlaylistMapper playlistMapper;
+
     @Mock 
     private PlaylistMusicRepository playlistMusicRepository;
+
     @Mock 
     private PlaylistMusicMapper playlistMusicMapper;
+    
     @InjectMocks 
     private PlaylistService playlistService;
-
-    private final static Faker faker = new Faker();
 
     @Test
     void shouldRetunsAllPlaylists(){
         List<Playlist> playlists = PlaylistFactory.create(5);
-        
+
         when(playlistRepository.findAll())
             .thenReturn(playlists);
 
         for(Playlist playlist: playlists){
-            PlaylistResponseDTO playlistResponse = new PlaylistResponseDTO(
-                playlist.getUuid(), 
-                playlist.getName(), 
-                playlist.getWeight(), 
-                List.of()
-            );
+            PlaylistResponseDTO playlistResponse = PlaylistFactory.createWithResponse();
 
             when(playlistMapper.toResponse(playlist))
                 .thenReturn(playlistResponse);
@@ -72,13 +66,7 @@ public class PlaylistServiceTest {
     @Test 
     void shouldReturnUniquePlaylist(){
         Playlist playlist = PlaylistFactory.create();
-
-        PlaylistResponseDTO playlistResponse = new PlaylistResponseDTO(
-            playlist.getUuid(), 
-            playlist.getName(), 
-            playlist.getWeight(), 
-            List.of()
-        );
+        PlaylistResponseDTO playlistResponse = PlaylistFactory.createWithResponse(playlist);
 
         when(playlistRepository.findByUuid(playlist.getUuid()))
             .thenReturn(Optional.of(playlist));
@@ -96,20 +84,8 @@ public class PlaylistServiceTest {
     @Test
     void shouldStorePlaylist(){
         Playlist playlist = PlaylistFactory.create();
-
-        PlaylistRequestDTO playlistRequest = new PlaylistRequestDTO(
-            UUID.randomUUID(),
-            faker.name().fullName(),
-            faker.number().randomDigitNotZero(),
-            List.of()
-        );
-
-        PlaylistResponseDTO playlistResponse = new PlaylistResponseDTO(
-            playlist.getUuid(), 
-            playlist.getName(), 
-            playlist.getWeight(), 
-            List.of()
-        );
+        PlaylistRequestDTO playlistRequest = PlaylistFactory.createWithRequest();
+        PlaylistResponseDTO playlistResponse = PlaylistFactory.createWithResponse(playlist);
 
         when(playlistRepository.save(playlist))
             .thenReturn(playlist);
@@ -131,19 +107,8 @@ public class PlaylistServiceTest {
     void shouldUpdatePlaylist(){
         Playlist playlist = PlaylistFactory.create();
 
-        PlaylistRequestDTO playlistRequest = new PlaylistRequestDTO(
-            UUID.randomUUID(),
-            faker.name().fullName(),
-            faker.number().randomDigitNotZero(),
-            List.of()
-        );
-
-        PlaylistResponseDTO playlistResponse = new PlaylistResponseDTO(
-            playlist.getUuid(), 
-            playlist.getName(), 
-            playlist.getWeight(), 
-            List.of()
-        );
+        PlaylistRequestDTO playlistRequest = PlaylistFactory.createWithRequest();
+        PlaylistResponseDTO playlistResponse = PlaylistFactory.createWithResponse(playlist);
 
         when(playlistRepository.findByUuid(playlist.getUuid()))
             .thenReturn(Optional.of(playlist));
@@ -180,16 +145,8 @@ public class PlaylistServiceTest {
         Playlist playlist = PlaylistFactory.create();
         PlaylistMusic playlistMusic = PlaylistMusicFactory.create();
         
-        PlaylistMusicRequestDTO playlistMusicRequest = new PlaylistMusicRequestDTO(
-            faker.name().fullName(),
-            "file/" + faker.internet().uuid() + ".mp3"
-        );
-
-        PlaylistMusicResponseDTO playlistMusicResponse = new PlaylistMusicResponseDTO(
-            playlistMusic.getUuid(),
-            playlistMusic.getName(),
-            playlistMusic.getPath()
-        ); 
+        PlaylistMusicRequestDTO playlistMusicRequest = PlaylistMusicFactory.createWithRequest();
+        PlaylistMusicResponseDTO playlistMusicResponse = PlaylistMusicFactory.createWithResponse(playlistMusic);
 
         when(playlistRepository.findByUuid(playlist.getUuid()))
             .thenReturn(Optional.of(playlist));
@@ -214,7 +171,6 @@ public class PlaylistServiceTest {
             );
 
         PlaylistResponseDTO result = playlistService.addMusic(playlist.getUuid(), playlistMusicRequest);
-
         assertEquals(1, result.musics().size());
     }
 

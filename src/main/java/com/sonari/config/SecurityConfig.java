@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.sonari.security.SecurityFilter;
+import com.sonari.filters.SecurityFilter;
 
 import lombok.RequiredArgsConstructor;
 

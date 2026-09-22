@@ -19,6 +19,7 @@ import com.sonari.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -45,7 +46,7 @@ public class UserController {
         description = "Returns a user based on the provided UUID."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public UserResponseDTO show(@PathVariable("uuid") UUID uuid){
+    public UserResponseDTO show(@PathVariable("user_uuid") UUID uuid){
         return userService.show(uuid);
     }
 
@@ -55,7 +56,7 @@ public class UserController {
         description = "Creates a new user with the provided data."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public UserResponseDTO store(@RequestBody UserRequestDTO user){
+    public UserResponseDTO store(@Valid @RequestBody UserRequestDTO user){
         return userService.store(user);
     }
 
@@ -65,7 +66,7 @@ public class UserController {
         description = "Updates an existing user based on the provided UUID."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public UserResponseDTO update(@PathVariable("user_uuid") UUID uuid, @RequestBody UserRequestDTO user){
+    public UserResponseDTO update(@PathVariable("user_uuid") UUID uuid, @Valid @RequestBody UserRequestDTO user){
         return userService.update(uuid, user);
     }
 

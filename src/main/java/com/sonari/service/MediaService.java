@@ -6,18 +6,21 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.sonari.dto.MediaResponseDTO;
 
-import lombok.RequiredArgsConstructor;
-
 @Service 
-@RequiredArgsConstructor 
 public class MediaService {
 
-    public MediaResponseDTO  list(){
-        Path directory = Path.of("/media");
+    private final Path directory;
+
+    public MediaService(@Value("/media") String directory){
+        this.directory = Path.of(directory);
+    }
+
+    public MediaResponseDTO list(){
         return Tree(directory);
     }
 

@@ -1,4 +1,4 @@
-package com.sonari.security;
+package com.sonari.filters;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sonari.entity.User;
 import com.sonari.repository.UserRepository;
+import com.sonari.service.TokenService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
