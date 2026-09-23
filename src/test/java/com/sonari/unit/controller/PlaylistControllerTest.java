@@ -170,6 +170,29 @@ public class PlaylistControllerTest {
         .andExpect(status().isOk());
     }
 
+    @Test
+    void shouldReturnBadRequestWhenNameIsBlankAddMusicOnPlaylist() throws Exception{
+        PlaylistMusicRequestDTO playlistMusicRequest = new PlaylistMusicRequestDTO(
+            "",
+            "temp/music.mp3"
+        );
+
+        List<PlaylistMusicResponseDTO> playlistMusicResponse = PlaylistMusicFactory.createWithResponse(10);
+        PlaylistResponseDTO playlistResponse = PlaylistFactory.createWithResponse(playlistMusicResponse);
+
+        when(playlistService.addMusic(playlistResponse.uuid(), playlistMusicRequest))
+            .thenReturn(playlistResponse);
+
+        mockMvc.perform(
+            post("/playlists/{uuid}/musics", playlistResponse.uuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(playlistMusicRequest))        
+        )
+        .andExpect(status().isBadRequest());
+
+        verify(playlistService, never()).addMusic(any(), any());
+    }
+
     @Test 
     void shouldRemoveMusicOnPlaylist() throws Exception{
         PlaylistMusic playlistMusic = PlaylistMusicFactory.create();

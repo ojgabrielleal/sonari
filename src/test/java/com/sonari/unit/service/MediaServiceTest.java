@@ -26,7 +26,7 @@ public class MediaServiceTest {
 
         MediaService mediaService = new MediaService(tempDir.toString());
 
-        MediaResponseDTO result = mediaService.list();
+        MediaResponseDTO result = mediaService.index();
         assertEquals(1, result.children().size());
 
         MediaResponseDTO file = result.children().get(0);

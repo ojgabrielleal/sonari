@@ -30,4 +30,13 @@ public class AuthController {
         return authService.auth(data);
     }
 
+    @PostMapping("/create")
+    @Operation(
+        summary = "Create new access",
+        description = "Creates a new user access using the provided registration data."
+    )
+    public void newAccess(@RequestBody AuthRequestDTO data){
+        authService.newAccess(data);
+    }
+
 }

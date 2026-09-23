@@ -1,12 +1,14 @@
 package com.sonari.unit.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -60,5 +62,25 @@ public class AuthServiceTest {
         );
 
         assertEquals(rawToken, result.token());
+    }
+
+    @Test
+    void shouldCreateNewAccess() {
+        AuthRequestDTO authRequest = new AuthRequestDTO(
+            "test",
+            "123456"
+        );
+
+        when(passwordEncoder.encode(authRequest.password()))
+            .thenReturn("password-hashed");
+
+        authService.newAccess(authRequest);
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userCaptor.capture());
+
+        User savedUser = userCaptor.getValue();
+        assertEquals(authRequest.username(), savedUser.getUsername());
+        assertEquals("password-hashed", savedUser.getPassword());
     }
 }

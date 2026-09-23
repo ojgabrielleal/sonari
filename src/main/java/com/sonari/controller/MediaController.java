@@ -26,7 +26,7 @@ public class MediaController {
         description = "Returns all media files available in the storage, including files from subdirectories."
     )
     @SecurityRequirement(name = "bearerAuth")
-    public MediaResponseDTO list(){
-        return mediaService.list();
+    public MediaResponseDTO index(){
+        return mediaService.index();
     }
 }

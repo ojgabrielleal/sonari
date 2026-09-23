@@ -20,11 +20,11 @@ public class MediaService {
         this.directory = Path.of(directory);
     }
 
-    public MediaResponseDTO list(){
-        return Tree(directory);
+    public MediaResponseDTO index(){
+        return tree(directory);
     }
 
-    private MediaResponseDTO Tree(Path path){
+    private MediaResponseDTO tree(Path path){
         if(Files.isRegularFile(path)){
             return new MediaResponseDTO(
                 path.getFileName().toString(),
@@ -36,7 +36,7 @@ public class MediaService {
 
         try(Stream<Path> paths = Files.list(path)){
             List<MediaResponseDTO> children = paths
-                .map(child -> Tree(child))
+                .map(child -> tree(child))
                 .toList();
 
             return new MediaResponseDTO(
